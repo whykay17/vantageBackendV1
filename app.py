@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, session
+from flask import Flask, jsonify, session,request
 from flask_cors import CORS
 from auth import login, callback
 from support import login_required
-from youtube import get_youtube_data
+from youtube import get_overview,get_period
 import os
 
 app = Flask(__name__)
@@ -23,10 +23,16 @@ def callback_route():
 def check_auth():
     return jsonify(authenticated='credentials' in session)
 
-@app.route("/youtube-data")
+@app.route("/channel-overview")
 @login_required
-def youtube_data():
-    return jsonify(get_youtube_data(session["credentials"]))
+def overview_data():
+    return jsonify(get_overview(session["credentials"]))
+
+@app.route("/period-stats",methods=['GET'])
+@login_required
+def period_stats():
+    dayGap= int(request.args.get('period', '7'))
+    return jsonify(get_period(dayGap,session["credentials"]))
 
 @app.route("/logout")
 @login_required
