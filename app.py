@@ -2,7 +2,7 @@ from flask import Flask, jsonify, session,request
 from flask_cors import CORS
 from auth import login, callback
 from support import login_required
-from youtube import get_overview,get_period
+from youtube import get_overview,get_period,get_latest_video
 import os
 
 app = Flask(__name__)
@@ -33,6 +33,11 @@ def overview_data():
 def period_stats():
     dayGap= int(request.args.get('period', '7'))
     return jsonify(get_period(dayGap,session["credentials"]))
+
+@app.route("/latest-video")
+@login_required
+def latest_stats():
+    return jsonify(get_latest_video(session["credentials"]))
 
 @app.route("/logout")
 @login_required
