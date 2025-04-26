@@ -2,7 +2,7 @@ from flask import Flask, jsonify, session,request
 from flask_cors import CORS
 from auth import login, callback
 from support import login_required
-from youtube import get_overview,get_period,get_latest_video
+from dashboard import get_overview,get_latest_video,get_period
 import os
 
 app = Flask(__name__)
