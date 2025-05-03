@@ -4,7 +4,7 @@ from support import version_data,service_data,execute_api_request
 from dashboard_src.overview import get_overview_data
 from dashboard_src.latest import get_latest_video_id,get_video_metadata,get_video_stats
 from dashboard_src.period import get_period_history
-from dashboard_src.best import get_best_video_data
+from dashboard_src.best import get_all_videos,calculate_score,filter_videos_by_date
 
 def get_overview(session_creds):
     return get_overview_data(session_creds)
@@ -23,5 +23,27 @@ def get_latest_video(session_creds):
         **stats
     }
 
-def get_best_video(gap,session_creds):
-    return get_best_video_data(session_creds,gap)
+def get_best_video(days,session_creds):
+    creds = Credentials(**session_creds)
+    youtube = build(service_data, version_data, credentials=creds)
+
+    video_list = get_all_videos(session_creds)
+    range_videos = filter_videos_by_date(video_list, days)
+
+    video_stats = youtube.videos().list(
+        part="statistics,snippet",
+        id=",".join(range_videos)
+    ).execute()
+
+    scored_videos = []
+    for item in video_stats['items']:
+        scored_videos.append(calculate_score(item))
+
+    scores = [video["score"] for video in scored_videos]
+    best_score = max(scores)
+    avg_score = sum(scores)/len(scores)
+    percent_score = (best_score-avg_score)/avg_score *100
+
+    best_video = next (video for video in scored_videos if video['score'] == best_score )
+    best_video["percentScore"]=percent_score
+    return best_video

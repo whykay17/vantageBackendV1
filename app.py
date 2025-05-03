@@ -39,11 +39,11 @@ def period_stats():
 def latest_stats():
     return jsonify(get_latest_video(session["credentials"]))
 
-@app.route("/best_video",methods=['GET'])
+@app.route("/best-video",methods=['GET'])
 @login_required
 def best_video():
     dayGap= int(request.args.get('period', '7'))
-    return jsonify(get_best_video(1500,session["credentials"]))
+    return jsonify(get_best_video(dayGap,session["credentials"]))
 
 @app.route("/logout")
 @login_required

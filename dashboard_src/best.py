@@ -2,21 +2,7 @@ from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from support import service_data, version_data
-
-def get_best_video_data(session_creds, days):
-    creds = Credentials(**session_creds)
-    youtube = build(service_data, version_data, credentials=creds)
-
-    video_list = get_all_videos(session_creds)
-    range_videos = filter_videos_by_date(video_list, days)
-
-    # Fetch video statistics
-    video_stats = youtube.videos().list(
-        part="statistics,snippet",
-        id=",".join(range_videos)
-    ).execute()
-
-    return video_stats['items']
+import math
 
 def get_all_videos(session_creds):
     creds = Credentials(**session_creds)
@@ -64,3 +50,20 @@ def filter_videos_by_date(videos,range):
         return {"message": "No videos found in the specified date range."}
     else:
         return video_ids
+    
+def calculate_score(video):
+    likes=int(video['statistics']['likeCount'])
+    dislikes=int(video['statistics']['dislikeCount'])
+    views=int(video['statistics']['viewCount'])
+    comments=int(video['statistics']['commentCount'])
+    engagementScore=(likes+dislikes+comments)/views
+    sentimentScore=likes/(likes+dislikes+1)
+    commentsScore=1+math.log((comments+1),10)
+    score=engagementScore*sentimentScore*commentsScore
+    return {
+            "id":video['id'],
+            "url":f'https://www.youtube.com/watch?v={video["id"]}',
+            "title":video['snippet']["title"],
+            "thumbnail":video['snippet']["thumbnails"]["medium"]["url"],
+            "score":score,
+    }
