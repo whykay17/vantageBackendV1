@@ -56,13 +56,14 @@ def calculate_score(video):
     dislikes=int(video['statistics']['dislikeCount'])
     views=int(video['statistics']['viewCount'])
     comments=int(video['statistics']['commentCount'])
-    engagementScore=(likes+dislikes+comments)/views
+    engagementScore=(likes+dislikes+comments)/(views+1)
     sentimentScore=likes/(likes+dislikes+1)
     commentsScore=1+math.log((comments+1),10)
     score=engagementScore*sentimentScore*commentsScore
     return {
             "id":video['id'],
             "url":f'https://www.youtube.com/watch?v={video["id"]}',
+            'publishedAt': video['snippet']['publishedAt'],
             "title":video['snippet']["title"],
             "thumbnail":video['snippet']["thumbnails"]["medium"]["url"],
             "score":score,

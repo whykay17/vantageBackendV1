@@ -40,9 +40,16 @@ def get_best_video(days,session_creds):
         scored_videos.append(calculate_score(item))
 
     scores = [video["score"] for video in scored_videos]
-    best_score = max(scores)
-    avg_score = sum(scores)/len(scores)
-    percent_score = (best_score-avg_score)/avg_score *100
+
+    if not scores:
+        return {"error":"No Videos Found"}
+    else:
+        best_score = max(scores)
+        avg_score = sum(scores)/len(scores)
+        if avg_score!=0:
+            percent_score = (best_score-avg_score)/avg_score *100
+        else:
+            percent_score=0
 
     best_video = next (video for video in scored_videos if video['score'] == best_score )
     best_video["percentScore"]=percent_score
