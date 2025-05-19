@@ -5,6 +5,7 @@ from dashboard_src.overview import get_overview_data
 from dashboard_src.latest import get_latest_video_id,get_video_metadata,get_video_stats
 from dashboard_src.period import get_period_history
 from dashboard_src.best import get_all_videos,calculate_score,filter_videos_by_date
+from dashboard_src.engagement import give_engagement,get_engagement_count,get_line_data
 
 def get_overview(session_creds):
     return get_overview_data(session_creds)
@@ -54,3 +55,16 @@ def get_best_video(days,session_creds):
     best_video = next (video for video in scored_videos if video['score'] == best_score )
     best_video["percentScore"]=percent_score
     return best_video
+
+def get_engagement(dayGap,session_creds):
+    engagement_by_day=give_engagement(dayGap,session_creds)
+    pieData= get_engagement_count(engagement_by_day)
+    lineData=get_line_data(engagement_by_day)
+    response={
+        'likes': pieData['likes'],
+        'comments': pieData['comments'],
+        'shares': pieData['shares'],
+        'line_data': lineData
+    }
+    return response
+
