@@ -42,8 +42,8 @@ def get_engagement_count(rows):
 
 
 def get_line_data(engagement_data):
-    
-    bucket_count = min(10, len(engagement_data))
+    labelCount = 10
+    bucket_count = min(labelCount, len(engagement_data))
     line_data = {
         'labels': [],
         'likes': [],
@@ -65,42 +65,13 @@ def get_line_data(engagement_data):
         total_shares = sum(row[3] for row in bucket)
 
         label = bucket[-1][0]
+        date_obj = datetime.strptime(label, "%Y-%m-%d")
+        label_date = f"{date_obj.day}/{date_obj.month}/{date_obj.strftime('%y')}"
 
-        line_data['labels'].append(label)
+        line_data['labels'].append(label_date)
         line_data['likes'].append(total_likes)
         line_data['comments'].append(total_comments)
         line_data['shares'].append(total_shares)
-
-
-    # if granularity == 'day':
-    #     for day_data in engagement_data:
-    #         line_data['labels'].append(day_data[0])
-    #         line_data['likes'].append(day_data[1])
-    #         line_data['comments'].append(day_data[2])
-    #         line_data['shares'].append(day_data[3]) 
-    # else:
-    #     if granularity == 'week':
-    #         divide=7
-    #     elif granularity == 'month':
-    #         divide=30
-    #     base=0
-    #     while base < len(engagement_data):
-    #         for i in range(base, base+divide):
-    #             total_likes = 0
-    #             total_comments = 0
-    #             total_shares = 0
-    #             for i in range(divide):
-    #                 total_likes += engagement_data[i]['likes']
-    #                 total_comments += engagement_data[i]['comments']
-    #                 total_shares += engagement_data[i]['shares']
-    #             labelled_data = {
-    #                 'date': day_data[base]['date'],
-    #                 'likes': total_likes,
-    #                 'comments': total_comments,
-    #                 'shares': total_shares
-    #             }
-    #             line_data.append(labelled_data)  
-    #         base += divide
 
     return line_data
 

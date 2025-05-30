@@ -2,7 +2,7 @@ from flask import Flask, jsonify, session,request
 from flask_cors import CORS
 from auth import login, callback
 from support import login_required
-from dashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement
+from dashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement,get_subscriber
 import os
 
 app = Flask(__name__)
@@ -50,6 +50,12 @@ def best_video():
 def engagement():
     dayGap= int(request.args.get('period', '7'))
     return jsonify(get_engagement(dayGap,session["credentials"]))
+
+@app.route("/subscriber", methods=['GET'])
+@login_required
+def subscriber():
+    dayGap= int(request.args.get('period', '7'))
+    return jsonify(get_subscriber(dayGap, session["credentials"]))
 
 @app.route("/logout")
 @login_required
