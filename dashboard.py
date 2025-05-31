@@ -7,6 +7,7 @@ from dashboard_src.period import get_period_history
 from dashboard_src.best import get_all_videos,calculate_score,filter_videos_by_date
 from dashboard_src.engagement import give_engagement,get_engagement_count,get_line_data
 from dashboard_src.subscriber import get_subscriber_change
+from dashboard_src.traffic import get_traffic_data
 
 def get_overview(session_creds):
     return get_overview_data(session_creds)
@@ -71,4 +72,7 @@ def get_engagement(dayGap,session_creds):
 
 def get_subscriber(dayGap, session_creds):
     return get_subscriber_change(dayGap, session_creds)
+
+def get_traffic(dayGap, session_creds):
+    return get_traffic_data(dayGap, session_creds)
 

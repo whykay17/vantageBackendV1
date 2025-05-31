@@ -2,7 +2,7 @@ from flask import Flask, jsonify, session,request
 from flask_cors import CORS
 from auth import login, callback
 from support import login_required
-from dashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement,get_subscriber
+from dashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement,get_subscriber,get_traffic
 import os
 
 app = Flask(__name__)
@@ -56,6 +56,12 @@ def engagement():
 def subscriber():
     dayGap= int(request.args.get('period', '7'))
     return jsonify(get_subscriber(dayGap, session["credentials"]))
+
+@app.route("/traffic", methods=['GET'])
+@login_required
+def traffic():
+    dayGap = int(request.args.get('period', '7'))
+    return jsonify(get_traffic(dayGap, session["credentials"]))
 
 @app.route("/logout")
 @login_required
