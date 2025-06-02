@@ -8,6 +8,7 @@ from dashboard_src.best import get_all_videos,calculate_score,filter_videos_by_d
 from dashboard_src.engagement import give_engagement,get_engagement_count,get_line_data
 from dashboard_src.subscriber import get_subscriber_change
 from dashboard_src.traffic import get_traffic_data
+from dashboard_src.retention import get_retention_data, get_sum_retention, get_retention_score
 
 def get_overview(session_creds):
     return get_overview_data(session_creds)
@@ -75,4 +76,18 @@ def get_subscriber(dayGap, session_creds):
 
 def get_traffic(dayGap, session_creds):
     return get_traffic_data(dayGap, session_creds)
+
+def get_retention(dayGap, session_creds):
+    retentionData = get_retention_data(dayGap, session_creds)
+    tileData = get_sum_retention(retentionData)
+    lineData = get_retention_score(retentionData)
+    response = {
+        'views': tileData['totalViews'],
+        'engagedViews': tileData['totalEngagedViews'],
+        'averageViewPercentage': tileData['averageViewPercentage'],
+        'averageViewDuration': tileData['averageViewDuration'],
+        'line_data': lineData
+    }
+    return response
+
 
