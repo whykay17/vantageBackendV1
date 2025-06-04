@@ -9,6 +9,7 @@ from dashboard_src.engagement import give_engagement,get_engagement_count,get_li
 from dashboard_src.subscriber import get_subscriber_change
 from dashboard_src.traffic import get_traffic_data
 from dashboard_src.retention import get_retention_data, get_sum_retention, get_retention_score
+from dashboard_src.demographics import get_gender_age,get_country, get_device
 
 def get_overview(session_creds):
     return get_overview_data(session_creds)
@@ -90,4 +91,12 @@ def get_retention(dayGap, session_creds):
     }
     return response
 
-
+def get_demographics(dayGap,session_creds,):
+    gender_age_data = get_gender_age(session_creds,dayGap)
+    country_data = get_country(session_creds,dayGap)
+    device_data = get_device(session_creds,dayGap)
+    return {
+        'gender_age':gender_age_data,
+        'country':country_data,
+        'device':device_data
+    }
