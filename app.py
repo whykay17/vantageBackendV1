@@ -3,6 +3,7 @@ from flask_cors import CORS
 from auth import login, callback
 from support import login_required
 from dashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement,get_subscriber,get_traffic,get_retention,get_demographics
+from videos import get_video_list
 import os
 
 app = Flask(__name__)
@@ -74,6 +75,11 @@ def retention():
 def demographics():
     dayGap = int(request.args.get('period', '7'))
     return jsonify(get_demographics(dayGap, session["credentials"]))
+
+@app.route("/video-list")
+@login_required
+def video_list():
+    return jsonify(get_video_list(session["credentials"]))
 
 @app.route("/logout")
 @login_required
