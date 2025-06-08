@@ -54,4 +54,4 @@ def callback():
         "client_secret": credentials.client_secret,
         "scopes": credentials.scopes
     }
-    return redirect("http://localhost:4200")
+    return redirect("http://localhost:4200/home")

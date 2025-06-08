@@ -7,15 +7,21 @@ from support import execute_api_request
 def get_latest_video_id(session_creds):
     creds = Credentials(**session_creds)
     youtube = build(service_data, version_data, credentials=creds)
-    request = youtube.search().list(
-        part='snippet',
-        forMine=True,
-        type='video',
-        order='date',
+
+    channel_response = youtube.channels().list(
+        part="contentDetails",
+        mine=True
+    ).execute()
+
+    uploads_playlist_id = channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+
+    playlist_response = youtube.playlistItems().list(
+        part="snippet",
+        playlistId=uploads_playlist_id,
         maxResults=1
-    )
-    response = request.execute()
-    return response["items"][0]["id"]["videoId"]
+    ).execute()
+
+    return playlist_response['items'][0]['snippet']['resourceId']['videoId']
 
 def get_video_metadata(video_id, session_creds):
     creds = Credentials(**session_creds)
