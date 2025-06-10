@@ -1,15 +1,15 @@
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from support import version_data,service_data,execute_api_request
-from dashboard_src.overview import get_overview_data
-from dashboard_src.latest import get_latest_video_id,get_video_metadata,get_video_stats
-from dashboard_src.period import get_period_history
-from dashboard_src.best import get_all_videos,calculate_score,filter_videos_by_date
-from dashboard_src.engagement import give_engagement,get_engagement_count,get_line_data
-from dashboard_src.subscriber import get_subscriber_change
-from dashboard_src.traffic import get_traffic_data
-from dashboard_src.retention import get_retention_data, get_sum_retention, get_retention_score
-from dashboard_src.demographics import get_gender_age,get_country, get_device
+from channel_src.overview import get_overview_data
+from channel_src.latest import get_latest_video_id,get_video_metadata,get_video_stats
+from channel_src.period import get_period_history
+from channel_src.best import get_all_videos,calculate_score,filter_videos_by_date
+from channel_src.engagement import give_engagement,get_engagement_count,get_line_data
+from channel_src.subscriber import get_subscriber_change
+from channel_src.traffic import get_traffic_data
+from channel_src.retention import get_retention_data, get_sum_retention, get_retention_score
+from channel_src.demographics import get_gender_age,get_country, get_device
 
 def get_overview(session_creds):
     return get_overview_data(session_creds)

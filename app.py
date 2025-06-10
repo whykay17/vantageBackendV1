@@ -2,7 +2,7 @@ from flask import Flask, jsonify, session,request
 from flask_cors import CORS
 from auth import login, callback
 from support import login_required
-from dashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement,get_subscriber,get_traffic,get_retention,get_demographics
+from channelDashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement,get_subscriber,get_traffic,get_retention,get_demographics
 from videos import get_video_list
 import os
 
