@@ -2,6 +2,7 @@ from functools import wraps
 from flask import session, jsonify
 import json
 import os
+import isodate
 
 service_analytics = 'youtubeAnalytics'
 service_data = 'youtube'
@@ -28,3 +29,23 @@ def login_required(f):
               return jsonify({"error": "Not authenticated"}), 401
         return f(*args, **kwargs)
     return decorated_function
+
+def formatAPIResponse(response):
+    headers = [header['name'] for header in response['columnHeaders']]
+    rows = response.get('rows',[])
+    formatted_rows = []
+    for row in rows:
+        row_data = dict(zip(headers,row))
+        formatted_rows.append(row_data)
+    return formatted_rows
+
+def parse_duration(duration_str):
+  duration = isodate.parse_duration(duration_str)
+  total_seconds = int(duration.total_seconds())
+  minutes, seconds = divmod(total_seconds, 60)
+  hours, minutes = divmod(minutes, 60)
+
+  if hours:
+      return f"{hours}h {minutes}m {seconds}s"
+  else:
+      return f"{minutes}m {seconds}s"

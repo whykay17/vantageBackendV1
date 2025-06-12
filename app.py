@@ -4,6 +4,7 @@ from auth import login, callback
 from support import login_required
 from channelDashboard import get_overview,get_latest_video,get_period,get_best_video,get_engagement,get_subscriber,get_traffic,get_retention,get_demographics
 from videos import get_video_list
+from videoDashboard import get_video_overview
 import os
 
 app = Flask(__name__)
@@ -80,6 +81,12 @@ def demographics():
 @login_required
 def video_list():
     return jsonify(get_video_list(session["credentials"]))
+
+@app.route("/video/overview",methods=['GET'])
+@login_required
+def video_overview():
+    videoid = request.args.get('vid','False')
+    return jsonify(get_video_overview(session["credentials"],videoid))
 
 @app.route("/logout")
 @login_required

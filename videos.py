@@ -27,10 +27,13 @@ def get_video_list(session_creds):
 
         for item in playlist_response['items']:
             snippet = item['snippet']
+            video_id = snippet['resourceId']['videoId']
+
             videos.append({
-                "id": snippet['resourceId']['videoId'],
+                "id": video_id,
                 "title": snippet['title'],
-                "thumbnailUrl": snippet['thumbnails']['medium']['url'],
+                "thumbnailUrl": f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg",
+                # "thumbnailUrl": snippet['thumbnails']['medium']['url'],
                 "publishedOn": snippet['publishedAt'],
             })
 

@@ -2,7 +2,7 @@ from datetime import datetime,timedelta
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from support import service_analytics,version_analytics,execute_api_request
-from support import execute_api_request
+from support import execute_api_request,formatAPIResponse
 
 def get_period_history(dayGap,session_creds):
     creds = Credentials(**session_creds)
@@ -62,12 +62,3 @@ def summarize_period_data(data):
     if(count!=0):
         summary['averageViewPercentage']/=count
     return summary   
-
-def formatAPIResponse(response):
-    headers = [header['name'] for header in response['columnHeaders']]
-    rows = response.get('rows',[])
-    formatted_rows = []
-    for row in rows:
-        row_data = dict(zip(headers,row))
-        formatted_rows.append(row_data)
-    return formatted_rows

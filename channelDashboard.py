@@ -1,6 +1,6 @@
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
-from support import version_data,service_data,execute_api_request
+from support import version_data,service_data
 from channel_src.overview import get_overview_data
 from channel_src.latest import get_latest_video_id,get_video_metadata,get_video_stats
 from channel_src.period import get_period_history
