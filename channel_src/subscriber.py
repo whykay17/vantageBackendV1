@@ -4,17 +4,14 @@ from google.oauth2.credentials import Credentials
 from support import service_analytics, version_analytics
 import math
 
-def get_subscriber_change(dayGap, session):
+def get_subscriber_change(start_date, end_date, session):
     creds = Credentials(**session)
     youtube_analytics = build(service_analytics, version_analytics, credentials=creds)
 
-    end_date = datetime.utcnow().date()
-    start_date = end_date - timedelta(days=dayGap)
-
     response = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate=start_date.strftime('%Y-%m-%d'),
-        endDate=end_date.strftime('%Y-%m-%d'),
+        startDate=start_date,
+        endDate=end_date,
         metrics='subscribersGained,subscribersLost',
         dimensions='day',
         sort='day'

@@ -34,11 +34,9 @@ def get_all_videos(session_creds):
 
     return playlist_items
 
-def filter_videos_by_date(videos,range):
-    end_date = datetime.utcnow()
-    start_date = end_date - timedelta(days=range)
-    start_date_iso = start_date.isoformat("T") + "Z"
-    end_date_iso = end_date.isoformat("T") + "Z"
+def filter_videos_by_date(videos, start_date, end_date):
+    start_date_iso = datetime.strptime(start_date, "%Y-%m-%d").isoformat("T") + "Z"
+    end_date_iso = datetime.strptime(end_date, "%Y-%m-%d").isoformat("T") + "Z"
 
     video_ids = []
     for item in videos:

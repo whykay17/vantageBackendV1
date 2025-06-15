@@ -3,17 +3,14 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from support import service_analytics, version_analytics
 
-def get_gender_age(session_creds, dayGap):
+def get_gender_age(session_creds, start_date, end_date):
     creds = Credentials(**session_creds)
     youtube_analytics = build(service_analytics, version_analytics, credentials=creds)
 
-    end_date = datetime.utcnow().date()
-    start_date = end_date - timedelta(days=dayGap)
-
     response = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate=start_date.strftime('%Y-%m-%d'),
-        endDate=end_date.strftime('%Y-%m-%d'),
+        startDate=start_date,
+        endDate=end_date,
         metrics='viewerPercentage',
         dimensions='ageGroup,gender',
         sort='ageGroup'
@@ -60,17 +57,14 @@ def get_gender_age(session_creds, dayGap):
     }
     return chart_data
 
-def get_country(session_creds, dayGap):
+def get_country(session_creds, start_date, end_date):
     creds = Credentials(**session_creds)
     youtube_analytics = build(service_analytics, version_analytics, credentials=creds)
 
-    end_date = datetime.utcnow().date()
-    start_date = end_date - timedelta(days=dayGap)
-
     response = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate=start_date.strftime('%Y-%m-%d'),
-        endDate=end_date.strftime('%Y-%m-%d'),
+        startDate=start_date,
+        endDate=end_date,
         metrics='views',
         dimensions='country',
         sort='-views',
@@ -85,17 +79,14 @@ def get_country(session_creds, dayGap):
     ]
     return countryViews
 
-def get_device(session_creds, dayGap):
+def get_device(session_creds, start_date, end_date):
     creds = Credentials(**session_creds)
     youtube_analytics = build(service_analytics, version_analytics, credentials=creds)
 
-    end_date = datetime.utcnow().date()
-    start_date = end_date - timedelta(days=dayGap)
-
     response = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate=start_date.strftime('%Y-%m-%d'),
-        endDate=end_date.strftime('%Y-%m-%d'),
+        startDate=start_date,
+        endDate=end_date,
         metrics='views',
         dimensions='deviceType',
         sort='-views'

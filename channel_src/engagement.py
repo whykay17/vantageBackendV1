@@ -4,23 +4,20 @@ from support import service_analytics,version_analytics
 from datetime import datetime, timedelta
 import math
 
-def give_engagement(dayGap, session_creds):
+def give_engagement(start_date, end_date, session_creds):
     creds = Credentials(**session_creds)
     youtube_analytics = build(service_analytics, version_analytics, credentials=creds)
 
-    end_date = datetime.utcnow().date()
-    start_date = end_date - timedelta(days=dayGap)
-
     response = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate=start_date.strftime('%Y-%m-%d'),
-        endDate=end_date.strftime('%Y-%m-%d'),
+        startDate=start_date,
+        endDate=end_date,
         metrics='likes,comments,shares',
         dimensions='day',
         sort='day'
     ).execute()
 
-    return response.get('rows', [])  # just return rows directly
+    return response.get('rows', [])
 
 def get_engagement_count(rows):
     engagement_count = {

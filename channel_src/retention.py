@@ -4,18 +4,15 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from support import service_analytics, version_analytics
 
-def get_retention_data(dayGap, session_creds):
+def get_retention_data(start_date, end_date, session_creds):
     creds = Credentials(**session_creds)
     youtube_analytics = build(service_analytics, version_analytics, credentials=creds)
 
-    end_date = datetime.utcnow().date()
-    start_date = end_date - timedelta(days=dayGap)
-
     response = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate=start_date.strftime('%Y-%m-%d'),
-        endDate=end_date.strftime('%Y-%m-%d'),
-        metrics= "views,engagedViews,averageViewPercentage,averageViewDuration",
+        startDate=start_date,
+        endDate=end_date,
+        metrics="views,engagedViews,averageViewPercentage,averageViewDuration",
         dimensions='day',
         sort='day'
     ).execute()

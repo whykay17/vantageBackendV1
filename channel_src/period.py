@@ -4,31 +4,31 @@ from googleapiclient.discovery import build
 from support import service_analytics,version_analytics,execute_api_request
 from support import execute_api_request,formatAPIResponse
 
-def get_period_history(dayGap,session_creds):
+def get_period_history(start_date, end_date, session_creds):
     creds = Credentials(**session_creds)
-    youtube = build(service_analytics,version_analytics,credentials=creds)
-    current_date = datetime.utcnow().date()
-    start_date = current_date - timedelta(days=dayGap)
-    past_date = start_date - timedelta(days=dayGap)
-    currentStats=execute_api_request(
+    youtube = build(service_analytics, version_analytics, credentials=creds)
+
+    past_date = datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=(datetime.strptime(end_date, '%Y-%m-%d') - datetime.strptime(start_date, '%Y-%m-%d')).days)
+
+    currentStats = execute_api_request(
         client_library_function=youtube.reports().query,
         ids='channel==MINE',
         dimensions='day',
         metrics='views,comments,likes,estimatedMinutesWatched,subscribersGained,averageViewPercentage',
         sort='views',
-        startDate=start_date.isoformat(),
-        endDate=current_date.isoformat()
+        startDate=start_date,
+        endDate=end_date
     )
-    pastStats=execute_api_request(
+    pastStats = execute_api_request(
         client_library_function=youtube.reports().query,
         ids='channel==MINE',
         dimensions='day',
         metrics='views,comments,likes,estimatedMinutesWatched,subscribersGained,averageViewPercentage',
         sort='views',
-        startDate=past_date.isoformat(),
-        endDate=start_date.isoformat()
+        startDate=past_date.strftime('%Y-%m-%d'),
+        endDate=start_date
     )
-    
+
     formatDataCurrent = formatAPIResponse(currentStats)
     formatDataPast = formatAPIResponse(pastStats)
 

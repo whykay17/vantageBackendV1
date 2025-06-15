@@ -30,52 +30,74 @@ def check_auth():
 def overview_data():
     return jsonify(get_overview(session["credentials"]))
 
-@app.route("/channel/period-stats",methods=['GET'])
+@app.route("/channel/period-stats", methods=['GET'])
 @login_required
 def period_stats():
-    dayGap= int(request.args.get('period', '7'))
-    return jsonify(get_period(dayGap,session["credentials"]))
+    start_date = request.args.get('start', None)
+    end_date = request.args.get('end', None)
+    if not start_date or not end_date:
+        return jsonify({"error": "Start and end dates are required"}), 400
+    return jsonify(get_period(start_date, end_date, session["credentials"]))
+
 
 @app.route("/channel/latest-video")
 @login_required
 def latest_stats():
     return jsonify(get_latest_video(session["credentials"]))
 
-@app.route("/channel/best-video",methods=['GET'])
+@app.route("/channel/best-video", methods=['GET'])
 @login_required
 def best_video():
-    dayGap= int(request.args.get('period', '7'))
-    return jsonify(get_best_video(dayGap,session["credentials"]))
+    start_date = request.args.get('start', None)
+    end_date = request.args.get('end', None)
+    if not start_date or not end_date:
+        return jsonify({"error": "Start and end dates are required"}), 400
+    return jsonify(get_best_video(start_date, end_date, session["credentials"]))
 
-@app.route("/channel/engagement",methods=['GET'])
+@app.route("/channel/engagement", methods=['GET'])
 @login_required
 def engagement():
-    dayGap= int(request.args.get('period', '7'))
-    return jsonify(get_engagement(dayGap,session["credentials"]))
+    start_date = request.args.get('start', None)
+    end_date = request.args.get('end', None)
+    if not start_date or not end_date:
+        return jsonify({"error": "Start and end dates are required"}), 400
+    return jsonify(get_engagement(start_date, end_date, session["credentials"]))
 
 @app.route("/channel/subscriber", methods=['GET'])
 @login_required
 def subscriber():
-    dayGap= int(request.args.get('period', '7'))
-    return jsonify(get_subscriber(dayGap, session["credentials"]))
+    start_date = request.args.get('start', None)
+    end_date = request.args.get('end', None)
+    if not start_date or not end_date:
+        return jsonify({"error": "Start and end dates are required"}), 400
+    return jsonify(get_subscriber(start_date, end_date, session["credentials"]))
 
 @app.route("/channel/traffic", methods=['GET'])
 @login_required
 def traffic():
-    dayGap = int(request.args.get('period', '7'))
-    return jsonify(get_traffic(dayGap, session["credentials"]))
+    start_date = request.args.get('start', None)
+    end_date = request.args.get('end', None)
+    if not start_date or not end_date:
+        return jsonify({"error": "Start and end dates are required"}), 400
+    return jsonify(get_traffic(start_date, end_date, session["credentials"]))
 
 @app.route("/channel/retention", methods=['GET'])
 @login_required
 def retention():
-    dayGap = int(request.args.get('period', '7'))
-    return jsonify(get_retention(dayGap, session["credentials"]))
+    start_date = request.args.get('start', None)
+    end_date = request.args.get('end', None)
+    if not start_date or not end_date:
+        return jsonify({"error": "Start and end dates are required"}), 400
+    return jsonify(get_retention(start_date, end_date, session["credentials"]))
 
 @app.route("/channel/demographics", methods=['GET'])
 @login_required
 def demographics():
-    dayGap = int(request.args.get('period', '7'))
-    return jsonify(get_demographics(dayGap, session["credentials"]))
+    start_date = request.args.get('start', None)
+    end_date = request.args.get('end', None)
+    if not start_date or not end_date:
+        return jsonify({"error": "Start and end dates are required"}), 400
+    return jsonify(get_demographics(start_date, end_date, session["credentials"]))
 
 @app.route("/video/list")
 @login_required
