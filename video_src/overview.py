@@ -15,6 +15,7 @@ def overview_data(session_creds,videoid):
         part="snippet,contentDetails,status",
         id=videoid
     ).execute()
+    
     if not data_response["items"]:
         return {"error": "Video not found"}
 
@@ -42,7 +43,7 @@ def overview_data(session_creds,videoid):
         "videoUrl":f'https://www.youtube.com/watch?v={videoid}',
         "title": snippet["title"],
         "publishedAt": snippet["publishedAt"],
-        "tags": snippet["tags"][0:4],
+        "tags": (snippet.get("tags", ["No tags found"]))[0:4],
         "category":getCategory(snippet["categoryId"]),
         "duration": parse_duration(content_details["duration"]),
         "privacyStatus": status["privacyStatus"],

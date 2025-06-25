@@ -6,11 +6,13 @@ from channelDashboard import get_overview,get_latest_video,get_period,get_best_v
 from videos import get_video_list
 from videoDashboard import get_video_overview
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-app.secret_key = os.urandom(24)  # Replace with env variable in production
+app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
 
 @app.route("/login")
 def login_route():
@@ -117,4 +119,6 @@ def logout():
     return jsonify({"message": "Logged out successfully."})
 
 if __name__ == "__main__":
-    app.run(host="localhost",port="5000",debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("FLASK_ENV") != "production"
+    app.run(host="0.0.0.0", port=port, debug=debug)

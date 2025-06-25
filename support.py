@@ -22,7 +22,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "credentials" not in session:
-            if os.path.exists(TOKEN_FILE):
+            if os.environ.get("FLASK_ENV") != "production" and os.path.exists(TOKEN_FILE):
                 with open(TOKEN_FILE, "r") as token_file:
                     session["credentials"] = json.load(token_file)
             else:
