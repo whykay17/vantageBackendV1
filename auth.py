@@ -58,6 +58,6 @@ def callback():
         "scopes": credentials.scopes
     }
 
-    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:4200")
+    FRONTEND_URL = os.getenv("FRONTEND_URL")
     return redirect(f"{FRONTEND_URL}/home")
 

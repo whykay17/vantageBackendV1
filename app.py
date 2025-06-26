@@ -7,12 +7,20 @@ from videos import get_video_list
 from videoDashboard import get_video_overview
 import os
 from dotenv import load_dotenv
-load_dotenv()
+
+if(os.environ.get("FLASK_ENV") != "production"):
+    load_dotenv(dotenv_path=os.path.join("environments", ".env"))
+
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
+
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='None'
+)
 
 @app.route("/login")
 def login_route():
